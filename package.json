@@ -1,0 +1,93 @@
+{
+  "name": "local-ai-commit",
+  "displayName": "Local AI Commit",
+  "description": "Generate git commit messages from the Source Control view with the AI CLI you already have: Claude Code or Antigravity.",
+  "version": "0.2.1",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "SCM Providers"
+  ],
+  "main": "./extension.js",
+  "extensionDependencies": [
+    "vscode.git"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "localAiCommit.generate",
+        "title": "Generate Commit Message",
+        "category": "Local AI Commit",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "localAiCommit.selectProvider",
+        "title": "Set Default AI",
+        "category": "Local AI Commit"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "localAiCommit.generate",
+          "when": "scmProvider == git",
+          "group": "navigation"
+        },
+        {
+          "command": "localAiCommit.selectProvider",
+          "when": "scmProvider == git",
+          "group": "localAiCommit"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Local AI Commit",
+      "properties": {
+        "localAiCommit.provider": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "claude",
+            "antigravity"
+          ],
+          "enumDescriptions": [
+            "Use Antigravity inside the Antigravity IDE and Claude Code elsewhere, falling back to the other when its CLI is not installed.",
+            "Always use the Claude Code CLI (`claude`).",
+            "Always use the Antigravity CLI (`agy`)."
+          ],
+          "default": "auto",
+          "description": "Which AI CLI writes the commit message."
+        },
+        "localAiCommit.instructions": {
+          "type": "string",
+          "default": "",
+          "editPresentation": "multilineText",
+          "description": "Extra instructions appended to the prompt (e.g. language, scope rules, ticket prefixes)."
+        },
+        "localAiCommit.claudeModel": {
+          "type": "string",
+          "default": "haiku",
+          "description": "Model alias or ID passed to `claude --model` (e.g. haiku, sonnet, opus)."
+        },
+        "localAiCommit.claudePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the claude executable. Leave empty to use the one bundled with the Claude Code extension, falling back to `claude` on PATH."
+        },
+        "localAiCommit.antigravityModel": {
+          "type": "string",
+          "default": "gemini-3.8-flash-low",
+          "description": "Model ID passed to `agy --model` (run `agy models` to list them). Leave empty to use the CLI's default model."
+        },
+        "localAiCommit.antigravityPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the agy executable. Leave empty to look in `~/.local/bin` and `~/.gemini/bin`, falling back to `agy` on PATH."
+        }
+      }
+    }
+  }
+}
