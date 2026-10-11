@@ -2,7 +2,7 @@
   "name": "local-ai-commit",
   "displayName": "Local AI Commit",
   "description": "Generate git commit messages from the Source Control view with the AI CLI you already have: Claude Code or Antigravity.",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "publisher": "local",
   "license": "MIT",
   "engines": {
